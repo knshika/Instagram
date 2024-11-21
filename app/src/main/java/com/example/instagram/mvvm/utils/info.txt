@@ -1,0 +1,36 @@
+Flow of Interaction
+App Starts:
+
+MainActivity initializes HomeFragment.
+Fetching Posts:
+
+HomeFragment observes postsLiveData in PostViewModel.
+PostViewModel fetches posts from PostRepository.
+PostRepository returns a LiveData list of posts.
+When data changes, postsLiveData is updated, and the UI is automatically refreshed.
+Displaying Posts:
+
+HomeFragment passes the post list to PostAdapter.
+PostAdapter binds each post to a RecyclerView item (image, video, like count, etc.).
+User Interaction:
+
+Liking a Post:
+User clicks the "Like" button in a post item.
+PostAdapter notifies HomeFragment through PostClickListener.
+HomeFragment calls PostViewModel.likePost().
+PostViewModel updates the repository, which modifies the data and triggers UI updates.
+Commenting on a Post:
+User clicks the "Comment" button in a post item.
+The flow is similar to liking but includes adding a comment to the repository.
+Dynamic Updates:
+
+LiveData ensures the UI always reflects the latest data (e.g., updated like counts or added comments).
+
+Summary of Interactions
+File	            Responsibility	                Interaction
+MainActivity	    Hosts fragments	                Starts HomeFragment.
+HomeFragment	    Displays user feed	            Observes LiveData from PostViewModel. Passes user actions to PostViewModel.
+PostViewModel	    Bridges View and                Repository	Calls functions in PostRepository and updates LiveData.
+PostRepository	    Handles data operations	        Fetches and modifies posts, then updates LiveData.
+PostAdapter	        Displays posts in RecyclerView	Notifies HomeFragment of user actions using PostClickListener.
+Post/User Models	Represent data	                Passed between layers for processing and display.
